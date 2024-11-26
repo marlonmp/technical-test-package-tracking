@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ccs.Data;
 using ccs.Models;
+using ccs.DataObjects;
 
 namespace ccs.Controllers
 {
@@ -23,9 +24,11 @@ namespace ccs.Controllers
 
         // GET: api/DeliveryRequests
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DeliveryRequest>>> GetDeliveryRequest()
+        public async Task<ActionResult<IEnumerable<DeliveryRequestListDTO>>> GetDeliveryRequest()
         {
-            return await _context.DeliveryRequests.ToListAsync();
+            var deliveryRequests = await _context.DeliveryRequests.ToListAsync();
+
+            return Ok(deliveryRequests.Select(deliveryRequest => new DeliveryRequestListDTO(deliveryRequest)));
         }
 
         // GET: api/DeliveryRequests/5

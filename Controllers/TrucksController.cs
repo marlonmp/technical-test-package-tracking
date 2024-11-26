@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ccs.Data;
 using ccs.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ccs.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TrucksController : ControllerBase
     {
         private readonly CCSContext _context;

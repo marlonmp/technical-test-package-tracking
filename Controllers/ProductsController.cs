@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ccs.Data;
 using ccs.Models;
+using ccs.DataObjects;
 
 namespace ccs.Controllers
 {
@@ -45,12 +46,16 @@ namespace ccs.Controllers
         // PUT: api/Products/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct(int id, Product product)
+        public async Task<IActionResult> PutProduct(int id, ProductCreateUpdateDTO productData)
         {
-            if (id != product.Id)
+            var product = await _context.Product.FindAsync(id);
+
+            if (product == null)
             {
-                return BadRequest();
+                return NotFound();
             }
+
+            product = productData.ToModel(product);
 
             _context.Entry(product).State = EntityState.Modified;
 
@@ -76,8 +81,10 @@ namespace ccs.Controllers
         // POST: api/Products
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Product>> PostProduct(Product product)
+        public async Task<ActionResult<ProductCreateUpdateDTO>> PostProduct(ProductCreateUpdateDTO productData)
         {
+            var product = productData.ToModel();
+
             _context.Product.Add(product);
             await _context.SaveChangesAsync();
 
