@@ -8,11 +8,14 @@ using Microsoft.EntityFrameworkCore;
 using ccs.Data;
 using ccs.Models;
 using ccs.DataObjects;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ccs.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[Authorize]
     public class DeliveryRequestsController : ControllerBase
     {
         private readonly CCSContext _context;
@@ -79,8 +82,14 @@ namespace ccs.Controllers
         // POST: api/DeliveryRequests
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<DeliveryRequest>> PostDeliveryRequest(DeliveryRequest deliveryRequest)
+        public async Task<ActionResult<DeliveryRequestCreateDTO>> PostDeliveryRequest(DeliveryRequestCreateDTO deliveryRequestData)
         {
+            var userId = this.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var deliveryRequest = deliveryRequestData.ToModel();
+
+            deliveryRequest.UserId = userId ?? "";
+
             _context.DeliveryRequests.Add(deliveryRequest);
             await _context.SaveChangesAsync();
 
