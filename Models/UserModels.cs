@@ -1,8 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Xml.Linq;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace ccs.Models
 {
+    [Index(nameof(DocumentNumber), IsUnique=true)]
+    [Index(nameof(Email), IsUnique=true)]
     public class AppUser : IdentityUser
     {
         [Required]
@@ -19,13 +23,17 @@ namespace ccs.Models
 
         public bool IsActive { get; set; }
 
-        public bool IsAdmin { get; set; }
+        public DateTime CreatedAt { get; }
+
+        public DateTime UpdatedAt { get; }
 
         public ICollection<DeliveryRequest> DeliveryRequests { get; set; }
 
         public AppUser()
         {
             this.IsActive = true;
+            this.CreatedAt = DateTime.UtcNow;
+            this.UpdatedAt = DateTime.UtcNow;
         }
     }
 }

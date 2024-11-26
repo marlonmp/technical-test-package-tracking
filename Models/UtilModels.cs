@@ -1,16 +1,33 @@
-﻿namespace ccs.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ccs.Models
 {
-    public class BaseModel
+    public abstract class CreableModel
     {
         public int Id { get; set; }
 
-        public DateTime CreatedAt { get; set; }
+        [Timestamp]
+        public DateTime CreatedAt { get; private set; }
 
-        public DateTime UpdatedAt { get; set; }
-
-        public BaseModel()
+        public void AddTimestamp()
         {
             this.CreatedAt = DateTime.UtcNow;
+        }
+    }
+
+    public abstract class UpgradeableModel : CreableModel
+    {
+        [Timestamp]
+        public DateTime UpdatedAt { get; private set; }
+
+        public void AddTimestamp()
+        {
+            base.AddTimestamp();
+            this.UpdateTimestamp();
+        }
+
+        public void UpdateTimestamp()
+        {
             this.UpdatedAt = DateTime.UtcNow;
         }
     }

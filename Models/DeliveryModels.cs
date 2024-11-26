@@ -11,10 +11,10 @@ namespace ccs.Models
         APPROVED
     }
 
-    public class DeliveryRequest : BaseModel
+    public class DeliveryRequest : UpgradeableModel
     {
         [Required]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public virtual AppUser User { get; set; } = null!;
 
         [Required]
@@ -39,10 +39,8 @@ namespace ccs.Models
         HIGH,
     }
 
-    public class DeliveryRequestProduct
+    public class DeliveryRequestProduct : CreableModel
     {
-        public int Id { get; set; }
-
         [Required]
         public int DeliveryRequestId { get; set; }
         public virtual DeliveryRequest DeliveryRequest { get; set; }
@@ -61,12 +59,5 @@ namespace ccs.Models
         [Required]
         [Range(1, 1000)]
         public float Weight { get; set; }
-
-        public DateTime CreatedAt { get; set; }
-
-        public DeliveryRequestProduct()
-        {
-            this.CreatedAt = DateTime.Now;
-        }
     }
 }

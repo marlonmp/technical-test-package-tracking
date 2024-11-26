@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace ccs.Models
 {
 
-    public class Shipping : BaseModel
+    public class Shipping : UpgradeableModel
     {
         [Required]
         public int RouteId { get; set; }
@@ -28,22 +28,13 @@ namespace ccs.Models
         }
     }
 
-    public class ShippingDetail
+    public class ShippingDetail : CreableModel
     {
-        public int Id { get; set; }
-
         [Required]
         public int ShippingId { get; set; }
         public Shipping Shipping { get; set; } = null!;
 
         [Required]
         public string Message { get; set; }
-
-        public DateTime CreatedAt { get; set; }
-
-        public ShippingDetail()
-        {
-            this.CreatedAt = DateTime.UtcNow;
-        }
     }
 }

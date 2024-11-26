@@ -2,7 +2,7 @@
 
 namespace ccs.Models
 {
-    public class Product : BaseModel
+    public class Product : UpgradeableModel
     {
         [Required]
         [StringLength(48, MinimumLength=3)]

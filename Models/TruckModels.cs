@@ -1,9 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace ccs.Models
 {
-    public class Truck : BaseModel
+    [Index(nameof(Plate), IsUnique = true)]
+
+    public class Truck : UpgradeableModel
     {
         [Required]
         [StringLength(7, MinimumLength=6)]
@@ -16,7 +20,7 @@ namespace ccs.Models
         public ICollection<TruckMaintenance> Maintenances { get; set; }
     }
 
-    public class TruckMaintenance : BaseModel
+    public class TruckMaintenance : UpgradeableModel
     {
         [Required]
         [ForeignKey("Truck")]
